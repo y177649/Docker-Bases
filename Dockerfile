@@ -9,3 +9,7 @@ RUN apt-get update && apt-get indtall -y \
     && rm -rf /var/lib/apt/lists/*
 
 ENV MY_ENVIRONMENT_VAR /path/to/environment
+
+WORKDIR /usr/src/app
+
+CMD ["echo", "Hello World"]
