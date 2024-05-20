@@ -1,19 +1,19 @@
 FROM ubuntu:latest
 
-LABEL maintainer="github.com/y177649"
+RUN apt-get update
 
-RUN apt-get update && apt-get install -y \
-    curl \
-    vim \
-    git \
+RUN apt-get install -y \
     python3 \
     python3-pip \
+    python3-venv \
+    git \
+    vim \
+    curl \
     && rm -rf /var/lib/apt/lists/*
 
-RUN pip install --no-cache-dir flask-sqlalchemy
+RUN python3 -m venv /opt/venv
 
-ENV MY_ENVIRONMENT_VAR /path/to/environment
+RUN . /opt/venv/bin/activate && \
+    pip install flask flask-sqlalchemy
 
-WORKDIR /usr/src/app
-
-CMD ["echo", "Hello World"]
+WORKDIR /workspace
