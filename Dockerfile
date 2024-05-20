@@ -1,19 +1,27 @@
+# ベースイメージとしてUbuntuを使用
 FROM ubuntu:latest
 
-RUN apt-get update
-
-RUN apt-get install -y \
+# 必要なパッケージをインストール
+RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
     python3-venv \
     git \
     vim \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+    curl
 
+# 仮想環境を作成
 RUN python3 -m venv /opt/venv
 
-RUN . /opt/venv/bin/activate && \
-    pip install flask flask-sqlalchemy
+# 仮想環境をアクティブにし、必要なPythonライブラリをインストール
+RUN /opt/venv/bin/pip install --upgrade pip && \
+    /opt/venv/bin/pip install flask SQLAlchemy
 
+# 環境変数を設定して仮想環境をデフォルトのPythonとして使用
+ENV PATH="/opt/venv/bin:$PATH"
+
+# 作業ディレクトリを設定
 WORKDIR /workspace
+
+# コンテナ起動時のコマンドを設定
+CMD ["bash"]
