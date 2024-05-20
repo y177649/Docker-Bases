@@ -14,3 +14,14 @@ docker start -i コンテナ名
 ```shell
 exit
 ```
+
+## buildの際、ホストマシンのディレクトリをマウントする
+
+```bash
+docker run -it --name dev-env-container -v / マウントするディレクトリのフルパス /workspace dev-env
+```
+
+例
+```bash
+docker run -it --name dev-env-container -v /c/code:/workspace dev-env
+```
