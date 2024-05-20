@@ -1,0 +1,1 @@
+このディレクトリにid_rsa,id_rsa.pubを追加してbuildする
