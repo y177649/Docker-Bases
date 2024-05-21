@@ -1,27 +1,39 @@
 # 基本操作
 
- - コンテナの一覧表示
-```shell
-docker ps -a
+
+ - コンテナのbuild
+```cmd
+docker-compose build
 ```
 
- - コンテナの起動
-```shell
-docker start -i コンテナ名
+
+- コンテナのrun
+ ```cmd
+docker-compose up -d
+```
+
+
+ - コンテナのstart
+```cmd
+docker-compose start
 
 ```
- - コンテナの終了
-```shell
+
+
+- docker環境に入る
+```cmd
+docker-compose exec myservice bash
+```
+
+
+ - docker環境からCMD
+```bash
 exit
 ```
 
-## buildの際、ホストマシンのディレクトリをマウントする
 
-```bash
-docker run -it --name dev-env-container -v / マウントするディレクトリのフルパス /workspace dev-env
+- コンテナのstop
+```cmd
+docker-compose stop
 ```
 
-例
-```bash
-docker run -it --name dev-env-container -v /c/code:/workspace dev-env
-```
