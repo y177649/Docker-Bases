@@ -6,7 +6,29 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     git \
     vim \
-    curl
+    curl \
+    wget \
+    gpg \
+    apt-transport-https \
+    libx11-xcb1 \
+    libxkbfile1 \
+    libsecret-1-0 \
+    libxss1 \
+    libasound2 \
+    libx11-6 \
+    libxext6 \
+    libxrender1 \
+    libxtst6 \
+    libxi6 \
+    libglib2.0-0 \
+    software-properties-common
+
+# VS Codeのインストール
+RUN wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg && \
+    install -o root -g root -m 644 packages.microsoft.gpg /usr/share/keyrings/ && \
+    sh -c 'echo "deb [arch=amd64 signed-by=/usr/share/keyrings/packages.microsoft.gpg] https://packages.microsoft.com/repos/vscode stable main" > /etc/apt/sources.list.d/vscode.list' && \
+    apt-get update && \
+    apt-get install -y code
 
 RUN python3 -m venv /opt/venv
 
