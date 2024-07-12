@@ -1,33 +1,24 @@
-FROM ubuntu:latest
+FROM python:3.10-slim
 
 RUN apt-get update && apt-get install -y \
-    python3 \
-    python3-pip \
-    python3-venv \
+    openssh-client \
     git \
-    vim \
-    curl
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN python3 -m venv /opt/venv
-
-RUN /opt/venv/bin/pip install --upgrade pip && \
-    /opt/venv/bin/pip install flask SQLAlchemy
-
-ENV PATH="/opt/venv/bin:$PATH"
-
-# ホスト側のSSHキーがこのDockerfileと同じディレクトリにあると仮定します。
 COPY id_rsa /root/.ssh/id_rsa
 COPY id_rsa.pub /root/.ssh/id_rsa.pub
-
-# 適切なパーミッションを設定
 RUN chmod 600 /root/.ssh/id_rsa
 
-# GitHubのホストキーをknown_hostsに追加
-RUN mkdir -p /root/.ssh && ssh-keyscan github.com >> /root/.ssh/known_hosts
-
-# GitHubに初回接続してホストを確認（自動化）
-RUN ssh -T git@github.com || true
+RUN ssh-keyscan github.com >> /root/.ssh/known_hosts
 
 WORKDIR /workspace
 
-CMD ["bash"]
+RUN curl -fsSL https://code-server.dev/install.sh | sh
+
+RUN echo '#!/bin/sh\nexec code-server --bind-addr 0.0.0.0:8080 /workspace' > /usr/local/bin/start-code-server && \
+    chmod +x /usr/local/bin/start-code-server
+
+CMD ["start-code-server"]
+
+EXPOSE 8080
