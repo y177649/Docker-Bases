@@ -5,7 +5,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     && rm -rf /var/lib/apt/lists/*
-
+    
 COPY id_rsa /root/.ssh/id_rsa
 COPY id_rsa.pub /root/.ssh/id_rsa.pub
 RUN chmod 600 /root/.ssh/id_rsa
@@ -16,9 +16,9 @@ WORKDIR /workspace
 
 RUN curl -fsSL https://code-server.dev/install.sh | sh
 
-RUN echo '#!/bin/sh\nexec code-server --bind-addr 0.0.0.0:8080 /workspace' > /usr/local/bin/start-code-server && \
+RUN echo '#!/bin/sh\nexec code-server --bind-addr 0.0.0.0:8082 /workspace' > /usr/local/bin/start-code-server && \
     chmod +x /usr/local/bin/start-code-server
 
 CMD ["start-code-server"]
 
-EXPOSE 8080
+EXPOSE 8082
